@@ -1,0 +1,6 @@
+{
+  "name": "To-Do List & Task Manager",
+  "description": "Modern Android To-Do List and Task Manager with soft pastel UI, calendar planner, rich checklists, voice notes, reminders, and productivity statistics.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
