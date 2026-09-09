@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Bell, Palette, Calendar, Lock, MessageSquare, Shield,
   AlertCircle, RefreshCw, CheckCircle2, ChevronRight,
-  ExternalLink, Moon, Sun, Smartphone, Check, Cloud
+  ExternalLink, Moon, Sun, Smartphone, Check, Cloud, Download
 } from 'lucide-react';
 import { UserSettings } from '../types';
 
@@ -11,13 +11,15 @@ interface SettingsViewProps {
   onUpdateSettings: (newSettings: UserSettings) => void;
   onOpenSyncModal: () => void;
   onOpenAppLockSetup: () => void;
+  onOpenInstallModal?: () => void;
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
   settings,
   onUpdateSettings,
   onOpenSyncModal,
-  onOpenAppLockSetup
+  onOpenAppLockSetup,
+  onOpenInstallModal
 }) => {
   const [activeModal, setActiveModal] = useState<'privacy' | 'disclaimer' | 'feedback' | null>(null);
   const [feedbackText, setFeedbackText] = useState('');
@@ -250,6 +252,36 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Application Installation / APK */}
+      {onOpenInstallModal && (
+        <div>
+          <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 px-1">
+            Application Installation
+          </h3>
+          <div className="bg-white dark:bg-slate-850 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 p-3.5 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center text-blue-600">
+                <Download className="w-4 h-4" />
+              </div>
+              <div>
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                  Install Mobile App (APK)
+                </span>
+                <p className="text-[10px] text-slate-400">
+                  ফোনে সরাসরি অ্যাপ হিসেবে ইনস্টল করুন
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={onOpenInstallModal}
+              className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs transition-all active:scale-95"
+            >
+              Install
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* About Section (matching screenshot 1) */}
       <div>

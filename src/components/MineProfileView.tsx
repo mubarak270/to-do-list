@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import {
   User, Cloud, RefreshCw, Download, Upload, Shield, Cake,
-  Award, CheckCircle2, ChevronRight, Settings, Plus, Sparkles
+  Award, CheckCircle2, ChevronRight, Settings, Plus, Sparkles, Smartphone
 } from 'lucide-react';
 import { Task, BirthdayCountdown, UserSettings } from '../types';
 import { storage } from '../utils/storage';
@@ -15,6 +15,7 @@ interface MineProfileViewProps {
   onNavigateToSettings: () => void;
   onOpenAddCountdown: () => void;
   onDataImported: () => void;
+  onOpenInstallModal?: () => void;
 }
 
 export const MineProfileView: React.FC<MineProfileViewProps> = ({
@@ -24,7 +25,8 @@ export const MineProfileView: React.FC<MineProfileViewProps> = ({
   onOpenSyncModal,
   onNavigateToSettings,
   onOpenAddCountdown,
-  onDataImported
+  onDataImported,
+  onOpenInstallModal
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const completedCount = tasks.filter((t) => t.completed).length;
@@ -151,6 +153,32 @@ export const MineProfileView: React.FC<MineProfileViewProps> = ({
           />
         </div>
       </div>
+
+      {/* Install App / APK Card */}
+      {onOpenInstallModal && (
+        <div className="bg-white dark:bg-slate-850 rounded-3xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+              <Smartphone className="w-5 h-5" />
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-100">
+                Install Mobile App (APK)
+              </h4>
+              <p className="text-[11px] text-slate-400">
+                ফোনে সরাসরি ইনস্টল বা হোমস্ক্রিনে যুক্ত করুন
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onOpenInstallModal}
+            className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs active:scale-95 transition-all flex items-center gap-1.5"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Install</span>
+          </button>
+        </div>
+      )}
 
       {/* Birthday & Important Date Countdowns (matching screenshot 6) */}
       <div className="bg-white dark:bg-slate-850 rounded-3xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-800">

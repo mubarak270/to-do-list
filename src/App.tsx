@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import confetti from 'canvas-confetti';
-import { AndroidFrame } from './components/AndroidFrame';
+import { AppHeader } from './components/AppHeader';
+import { OfflineIndicator } from './components/OfflineIndicator';
+import { PWAInstallModal } from './components/PWAInstallModal';
 import { BottomNavBar } from './components/BottomNavBar';
 import { TasksMainView } from './components/TasksMainView';
 import { CalendarView } from './components/CalendarView';
@@ -37,6 +39,7 @@ export default function App() {
   const [isDriveSyncModalOpen, setIsDriveSyncModalOpen] = useState(false);
   const [isAppLockSetupOpen, setIsAppLockSetupOpen] = useState(false);
   const [isAddCountdownOpen, setIsAddCountdownOpen] = useState(false);
+  const [isPWAInstallOpen, setIsPWAInstallOpen] = useState(false);
   const [isAppLocked, setIsAppLocked] = useState(() => settings.pinLockEnabled);
   const [activeReminder, setActiveReminder] = useState<Task | null>(null);
 
@@ -291,16 +294,35 @@ export default function App() {
 
   const pendingCount = tasks.filter((t) => !t.completed).length;
 
+  const isDarkTheme =
+    settings.theme === 'dark' ||
+    (settings.theme === 'system' &&
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches);
+
   return (
-    <AndroidFrame
-      theme={settings.theme}
-      isOnline={isOnline}
-      onToggleOnline={handleToggleOnline}
-      isSyncing={isSyncing}
-      onManualSync={handleTriggerSync}
-      onBackPress={handleAndroidBack}
-      onHomePress={handleAndroidHome}
+    <div
+      className={`min-h-screen w-full flex flex-col items-center justify-start transition-colors duration-200 ${
+        isDarkTheme ? 'bg-slate-950 text-slate-100' : 'bg-slate-100/70 text-slate-800'
+      }`}
     >
+      <div className="w-full max-w-2xl lg:max-w-4xl min-h-screen flex flex-col bg-white dark:bg-slate-900 border-x border-slate-200/80 dark:border-slate-800/80 shadow-xs relative">
+        {/* App Header (No fake status bar or fake time) */}
+        <AppHeader
+          settings={settings}
+          isOnline={isOnline}
+          isSyncing={isSyncing}
+          onToggleOnline={handleToggleOnline}
+          onManualSync={handleTriggerSync}
+          onToggleTheme={() => {
+            const nextTheme = settings.theme === 'dark' ? 'light' : 'dark';
+            setSettings({ ...settings, theme: nextTheme });
+          }}
+          onOpenInstallModal={() => setIsPWAInstallOpen(true)}
+        />
+
+        {/* Offline notification banner */}
+        <OfflineIndicator />
       {/* App Lock PIN Screen if locked */}
       <AppLockModal
         isLocked={isAppLocked}
@@ -398,6 +420,7 @@ export default function App() {
             onNavigateToSettings={() => handleTabChange('settings')}
             onOpenAddCountdown={() => setIsAddCountdownOpen(true)}
             onDataImported={handleDataReloaded}
+            onOpenInstallModal={() => setIsPWAInstallOpen(true)}
           />
         )}
 
@@ -407,6 +430,7 @@ export default function App() {
             onUpdateSettings={setSettings}
             onOpenSyncModal={() => setIsDriveSyncModalOpen(true)}
             onOpenAppLockSetup={() => setIsAppLockSetupOpen(true)}
+            onOpenInstallModal={() => setIsPWAInstallOpen(true)}
           />
         )}
       </main>
@@ -451,6 +475,13 @@ export default function App() {
         onClose={() => setIsAddCountdownOpen(false)}
         onAddCountdown={(newCd) => setCountdowns((prev) => [...prev, newCd])}
       />
-    </AndroidFrame>
+
+      {/* PWA / APK Installation Modal */}
+      <PWAInstallModal
+        isOpen={isPWAInstallOpen}
+        onClose={() => setIsPWAInstallOpen(false)}
+      />
+      </div>
+    </div>
   );
 }
