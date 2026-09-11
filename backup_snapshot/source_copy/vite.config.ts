@@ -108,10 +108,6 @@ export default defineConfig(() => {
         },
         workbox: {
           globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
-          cleanupOutdatedCaches: true,
-          clientsClaim: true,
-          skipWaiting: true,
-          dontCacheBustURLsMatching: /\.[0-9a-f]{8}\./,
         },
         devOptions: {
           enabled: true,
@@ -119,16 +115,6 @@ export default defineConfig(() => {
         },
       }),
     ],
-    build: {
-      chunkSizeWarningLimit: 1000,
-      rollupOptions: {
-        output: {
-          entryFileNames: 'assets/[name]-[hash].js',
-          chunkFileNames: 'assets/[name]-[hash].js',
-          assetFileNames: 'assets/[name]-[hash].[ext]',
-        },
-      },
-    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
