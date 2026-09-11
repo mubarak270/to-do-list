@@ -108,10 +108,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
     <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 bg-slate-50/50 dark:bg-slate-900/50 pb-20">
       {/* Title */}
       <div>
-        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+        <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">
           Settings
         </h2>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+        <p className="text-xs font-medium text-slate-600 dark:text-slate-300">
           Preferences, backup & security
         </p>
       </div>
@@ -120,17 +120,17 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       <div
         id="settings-account-sync-btn"
         onClick={onOpenSyncModal}
-        className="relative bg-white dark:bg-slate-850 rounded-2xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-800 cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 transition-all flex items-center justify-between group overflow-hidden"
+        className="relative bg-white dark:bg-slate-850 rounded-2xl p-4 shadow-sm border border-slate-300 dark:border-slate-700 cursor-pointer hover:border-blue-500 transition-all flex items-center justify-between group overflow-hidden"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-950 flex items-center justify-center text-blue-600 dark:text-blue-400">
+          <div className="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-950 flex items-center justify-center text-blue-700 dark:text-blue-400">
             <RefreshCw className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">
+            <h3 className="text-sm font-extrabold text-slate-900 dark:text-white">
               Account Sync
             </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs font-medium text-slate-600 dark:text-slate-300">
               {settings.googleDrive.connected
                 ? `Connected: ${settings.googleDrive.email}`
                 : 'Sync with Google Drive & backup tasks'}
@@ -139,30 +139,30 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         </div>
 
         {/* Floating Cloud Sync Icon Bubble (matching screenshot 1) */}
-        <div className="w-10 h-10 rounded-2xl bg-teal-400/20 text-teal-600 dark:text-teal-400 flex items-center justify-center shadow-xs">
+        <div className="w-10 h-10 rounded-2xl bg-teal-500/20 text-teal-700 dark:text-teal-300 flex items-center justify-center shadow-xs">
           <Cloud className="w-5 h-5" />
         </div>
       </div>
 
       {/* Customize Section (matching screenshot 1) */}
       <div>
-        <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 px-1">
+        <h3 className="text-xs font-extrabold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2 px-1">
           Customize
         </h3>
 
-        <div className="bg-white dark:bg-slate-850 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
+        <div className="bg-white dark:bg-slate-850 rounded-2xl shadow-xs border border-slate-300 dark:border-slate-700 divide-y divide-slate-200 dark:divide-slate-800">
           {/* Notification & Reminder */}
           <div>
             <div className="p-3.5 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center text-blue-600">
+                <div className="w-8 h-8 rounded-xl bg-blue-100 dark:bg-blue-950 flex items-center justify-center text-blue-700 dark:text-blue-400">
                   <Bell className="w-4 h-4" />
                 </div>
                 <div>
-                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                  <span className="text-xs font-bold text-slate-900 dark:text-white">
                     Notification & Reminder
                   </span>
-                  <p className="text-[10px] text-slate-400">
+                  <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
                     Daily reminders, chime sound & ringtone
                   </p>
                 </div>
@@ -184,12 +184,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
             {/* Notification Testing & Android Channel Sub-Panel */}
             <div className="px-3.5 pb-3.5 pt-0">
-              <div className="bg-slate-50 dark:bg-slate-900/70 rounded-xl p-2.5 border border-slate-200/70 dark:border-slate-800 space-y-2">
+              <div className="bg-slate-50 dark:bg-slate-900/70 rounded-xl p-2.5 border border-slate-300 dark:border-slate-800 space-y-2">
                 <div className="flex items-center justify-between text-[11px]">
-                  <span className="font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+                  <span className="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Android Notification Engine
                   </span>
-                  <span className="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 font-bold text-[10px]">
                     Channel Active
                   </span>
                 </div>
@@ -200,7 +200,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     type="button"
                     onClick={handleTestNotification}
                     disabled={isTestingNotif}
-                    className="flex-1 min-w-[130px] flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-[11px] font-semibold transition-all shadow-xs disabled:opacity-50"
+                    className="flex-1 min-w-[130px] flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-[11px] font-bold transition-all shadow-xs disabled:opacity-50"
                   >
                     <BellRing className="w-3.5 h-3.5" />
                     <span>Test Notification</span>
@@ -211,7 +211,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     type="button"
                     onClick={handleOneMinuteTestReminder}
                     disabled={isTestingNotif}
-                    className="flex-1 min-w-[140px] flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 active:scale-95 text-white text-[11px] font-semibold transition-all shadow-xs disabled:opacity-50"
+                    className="flex-1 min-w-[140px] flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 active:scale-95 text-white text-[11px] font-bold transition-all shadow-xs disabled:opacity-50"
                   >
                     <Timer className="w-3.5 h-3.5" />
                     <span>1-Min Test Reminder</span>
@@ -219,7 +219,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 </div>
 
                 {notificationStatusMsg && (
-                  <p className="text-[10px] font-medium text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 p-1.5 rounded-md border border-slate-200 dark:border-slate-700 animate-in fade-in">
+                  <p className="text-[11px] font-semibold text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-800 p-2 rounded-md border border-slate-300 dark:border-slate-700 animate-in fade-in">
                     {notificationStatusMsg}
                   </p>
                 )}
@@ -230,29 +230,29 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           {/* Theme */}
           <div className="p-3.5 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-purple-50 dark:bg-purple-950 flex items-center justify-center text-purple-600">
+              <div className="w-8 h-8 rounded-xl bg-purple-100 dark:bg-purple-950 flex items-center justify-center text-purple-700 dark:text-purple-400">
                 <Palette className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                <span className="text-xs font-bold text-slate-900 dark:text-white">
                   Theme
                 </span>
-                <p className="text-[10px] text-slate-400 capitalize">
+                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400 capitalize">
                   Current: {settings.theme}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+            <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-300 dark:border-slate-700">
               {(['light', 'dark', 'system'] as const).map((mode) => (
                 <button
                   key={mode}
                   id={`theme-btn-${mode}`}
                   onClick={() => handleThemeChange(mode)}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold capitalize transition-all ${
+                  className={`px-2.5 py-1 rounded-lg text-xs font-bold capitalize transition-all ${
                     settings.theme === mode
-                      ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-xs'
-                      : 'text-slate-500 hover:text-slate-800 dark:text-slate-400'
+                      ? 'bg-white dark:bg-slate-700 text-blue-700 dark:text-blue-300 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900 dark:text-slate-400'
                   }`}
                 >
                   {mode}
@@ -264,27 +264,27 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
           {/* First Day of Week */}
           <div className="p-3.5 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-950 flex items-center justify-center text-amber-600">
+              <div className="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-amber-700 dark:text-amber-400">
                 <Calendar className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                <span className="text-xs font-bold text-slate-900 dark:text-white">
                   First Day of week
                 </span>
-                <p className="text-[10px] text-slate-400 capitalize">
+                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400 capitalize">
                   {settings.firstDayOfWeek}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl">
+            <div className="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-300 dark:border-slate-700">
               <button
                 id="firstday-sun-btn"
                 onClick={() => handleFirstDayChange('sunday')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                   settings.firstDayOfWeek === 'sunday'
-                    ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-xs'
-                    : 'text-slate-500'
+                    ? 'bg-white dark:bg-slate-700 text-blue-700 dark:text-blue-300 shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400'
                 }`}
               >
                 Sunday
@@ -292,10 +292,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               <button
                 id="firstday-mon-btn"
                 onClick={() => handleFirstDayChange('monday')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
                   settings.firstDayOfWeek === 'monday'
-                    ? 'bg-white dark:bg-slate-700 text-blue-600 dark:text-blue-400 shadow-xs'
-                    : 'text-slate-500'
+                    ? 'bg-white dark:bg-slate-700 text-blue-700 dark:text-blue-300 shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400'
                 }`}
               >
                 Monday
@@ -310,19 +310,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             className="p-3.5 flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40"
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-950 flex items-center justify-center text-emerald-600">
+              <div className="w-8 h-8 rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-700 dark:text-emerald-400">
                 <Lock className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                <span className="text-xs font-bold text-slate-900 dark:text-white">
                   Set app lock
                 </span>
-                <p className="text-[10px] text-slate-400">
+                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
                   {settings.pinLockEnabled ? 'Protected with 4-digit PIN' : 'Disabled'}
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
+            <div className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300 font-bold">
               <span>{settings.pinLockEnabled ? 'Enabled' : 'Off'}</span>
               <ChevronRight className="w-4 h-4" />
             </div>
@@ -335,19 +335,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             className="p-3.5 flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40"
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-teal-50 dark:bg-teal-950 flex items-center justify-center text-teal-600">
+              <div className="w-8 h-8 rounded-xl bg-teal-100 dark:bg-teal-950 flex items-center justify-center text-teal-700 dark:text-teal-400">
                 <MessageSquare className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                <span className="text-xs font-bold text-slate-900 dark:text-white">
                   Feedback
                 </span>
-                <p className="text-[10px] text-slate-400">
+                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
                   Share suggestions or report an issue
                 </p>
               </div>
             </div>
-            <ChevronRight className="w-4 h-4 text-slate-400" />
+            <ChevronRight className="w-4 h-4 text-slate-600 dark:text-slate-400" />
           </div>
         </div>
       </div>
@@ -355,26 +355,26 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       {/* Application Installation / APK */}
       {onOpenInstallModal && (
         <div>
-          <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 px-1">
+          <h3 className="text-xs font-extrabold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2 px-1">
             Application Installation
           </h3>
-          <div className="bg-white dark:bg-slate-850 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 p-3.5 flex items-center justify-between">
+          <div className="bg-white dark:bg-slate-850 rounded-2xl shadow-xs border border-slate-300 dark:border-slate-700 p-3.5 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center text-blue-600">
+              <div className="w-8 h-8 rounded-xl bg-blue-100 dark:bg-blue-950 flex items-center justify-center text-blue-700 dark:text-blue-400">
                 <Download className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                <span className="text-xs font-bold text-slate-900 dark:text-white">
                   Install Mobile App (APK)
                 </span>
-                <p className="text-[10px] text-slate-400">
-                  ফোনে সরাসরি অ্যাপ হিসেবে ইনস্টল করুন
+                <p className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
+                  Install directly on your phone as a standalone app
                 </p>
               </div>
             </div>
             <button
               onClick={onOpenInstallModal}
-              className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs transition-all active:scale-95"
+              className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs transition-all active:scale-95"
             >
               Install
             </button>
@@ -384,11 +384,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
       {/* About Section (matching screenshot 1) */}
       <div>
-        <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 px-1">
+        <h3 className="text-xs font-extrabold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2 px-1">
           About
         </h3>
 
-        <div className="bg-white dark:bg-slate-850 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
+        <div className="bg-white dark:bg-slate-850 rounded-2xl shadow-xs border border-slate-300 dark:border-slate-700 divide-y divide-slate-200 dark:divide-slate-800">
           {/* Privacy Policy */}
           <div
             id="open-privacy-policy-btn"
@@ -396,14 +396,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             className="p-3.5 flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40"
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center text-blue-600">
+              <div className="w-8 h-8 rounded-xl bg-blue-100 dark:bg-blue-950 flex items-center justify-center text-blue-700 dark:text-blue-400">
                 <Shield className="w-4 h-4" />
               </div>
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              <span className="text-xs font-bold text-slate-900 dark:text-white">
                 Privacy Policy
               </span>
             </div>
-            <ChevronRight className="w-4 h-4 text-slate-400" />
+            <ChevronRight className="w-4 h-4 text-slate-600 dark:text-slate-400" />
           </div>
 
           {/* Disclaimer */}
@@ -413,27 +413,27 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             className="p-3.5 flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40"
           >
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-950 flex items-center justify-center text-amber-600">
+              <div className="w-8 h-8 rounded-xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-amber-700 dark:text-amber-400">
                 <AlertCircle className="w-4 h-4" />
               </div>
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              <span className="text-xs font-bold text-slate-900 dark:text-white">
                 Disclaimer
               </span>
             </div>
-            <ChevronRight className="w-4 h-4 text-slate-400" />
+            <ChevronRight className="w-4 h-4 text-slate-600 dark:text-slate-400" />
           </div>
 
-          {/* Version (matching screenshot 1: Version: 1.03.15) */}
+          {/* Version */}
           <div className="p-3.5 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-600">
+              <div className="w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300">
                 <Smartphone className="w-4 h-4" />
               </div>
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              <span className="text-xs font-bold text-slate-900 dark:text-white">
                 Version: 1.03.15
               </span>
             </div>
-            <span className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full">
+            <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full">
               Latest
             </span>
           </div>
@@ -443,19 +443,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       {/* Modals for Privacy, Disclaimer, Feedback */}
       {activeModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="w-full max-w-sm bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-2xl border border-slate-200 dark:border-slate-800 animate-in fade-in">
+          <div className="w-full max-w-sm bg-white dark:bg-slate-900 rounded-3xl p-5 shadow-2xl border border-slate-300 dark:border-slate-800 animate-in fade-in">
             {activeModal === 'privacy' && (
               <>
-                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2">
+                <h3 className="text-base font-extrabold text-slate-900 dark:text-white mb-2">
                   Privacy Policy
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed max-h-60 overflow-y-auto">
+                <p className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed max-h-60 overflow-y-auto">
                   Your privacy is of utmost importance. To-Do List & Task Manager stores all your tasks, checklists, notes, attachments, and settings locally on your device or in your personal Google Drive account. We do not sell or track your personal task data. All data transfers to Google Drive are encrypted via HTTPS.
                 </p>
                 <div className="mt-4 flex justify-end">
                   <button
                     onClick={() => setActiveModal(null)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold"
                   >
                     Understood
                   </button>
@@ -465,16 +465,16 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
             {activeModal === 'disclaimer' && (
               <>
-                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-2">
+                <h3 className="text-base font-extrabold text-slate-900 dark:text-white mb-2">
                   Disclaimer
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                <p className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-relaxed">
                   This task manager app is designed to help you organize daily routines, personal schedules, checklists, and reminders. Reminders rely on standard device notifications. Please ensure battery-saving modes allow background notification delivery.
                 </p>
                 <div className="mt-4 flex justify-end">
                   <button
                     onClick={() => setActiveModal(null)}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold"
                   >
                     Close
                   </button>
@@ -484,10 +484,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
             {activeModal === 'feedback' && (
               <form onSubmit={handleFeedbackSubmit}>
-                <h3 className="text-base font-bold text-slate-900 dark:text-slate-100 mb-1">
+                <h3 className="text-base font-extrabold text-slate-900 dark:text-white mb-1">
                   Send Feedback
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mb-3">
+                <p className="text-xs font-medium text-slate-600 dark:text-slate-300 mb-3">
                   Let us know what features or widgets you'd like to see next!
                 </p>
                 <textarea
@@ -495,20 +495,20 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                   onChange={(e) => setFeedbackText(e.target.value)}
                   placeholder="Type your feedback here..."
                   rows={4}
-                  className="w-full text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 outline-hidden focus:border-blue-500 mb-3"
+                  className="w-full text-xs font-medium text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl p-3 outline-hidden focus:border-blue-500 mb-3 placeholder:text-slate-400 dark:placeholder:text-slate-500"
                   required
                 />
                 <div className="flex items-center justify-end gap-2">
                   <button
                     type="button"
                     onClick={() => setActiveModal(null)}
-                    className="px-3 py-1.5 text-xs text-slate-500"
+                    className="px-3 py-1.5 text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-bold"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold"
                   >
                     {feedbackSent ? 'Sent!' : 'Submit'}
                   </button>

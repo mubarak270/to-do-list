@@ -95,10 +95,10 @@ export const ChecklistsView: React.FC<ChecklistsViewProps> = ({
       {/* Top Banner */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">
+          <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">
             Unlimited Checklists
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs font-medium text-slate-600 dark:text-slate-300">
             Flexible standalone lists for study, shopping, movies & goals
           </p>
         </div>
@@ -115,7 +115,7 @@ export const ChecklistsView: React.FC<ChecklistsViewProps> = ({
       {/* New Checklist Creator Form Modal / Drawer */}
       {isCreatingList && (
         <form onSubmit={handleCreateChecklist} className="bg-white dark:bg-slate-800 rounded-2xl p-4 shadow-lg border border-blue-200 dark:border-blue-900 animate-in fade-in">
-          <h3 className="text-sm font-bold text-slate-800 dark:text-slate-200 mb-2">
+          <h3 className="text-sm font-extrabold text-slate-900 dark:text-white mb-2">
             Create New Checklist
           </h3>
           <input
@@ -124,14 +124,14 @@ export const ChecklistsView: React.FC<ChecklistsViewProps> = ({
             value={newListTitle}
             onChange={(e) => setNewListTitle(e.target.value)}
             placeholder="List Title (e.g. Packing Essentials, Books to Read...)"
-            className="w-full text-sm bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 outline-hidden focus:border-blue-500 mb-2"
+            className="w-full text-sm font-medium text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-2 outline-hidden focus:border-blue-500 mb-2 placeholder:text-slate-400 dark:placeholder:text-slate-500"
             autoFocus
           />
           <div className="flex items-center justify-between">
             <select
               value={newListCategory}
               onChange={(e) => setNewListCategory(e.target.value)}
-              className="text-xs bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-700 dark:text-slate-300"
+              className="text-xs font-bold bg-slate-100 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 text-slate-800 dark:text-slate-200"
             >
               <option value="Personal">Personal</option>
               <option value="Study">Study</option>
@@ -143,13 +143,13 @@ export const ChecklistsView: React.FC<ChecklistsViewProps> = ({
               <button
                 type="button"
                 onClick={() => setIsCreatingList(false)}
-                className="text-xs font-semibold text-slate-500 hover:text-slate-700 px-3 py-1.5"
+                className="text-xs font-bold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white px-3 py-1.5"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="text-xs font-bold bg-blue-600 text-white rounded-lg px-4 py-1.5 hover:bg-blue-700"
+                className="text-xs font-bold bg-blue-600 text-white rounded-lg px-4 py-1.5 hover:bg-blue-700 shadow-xs"
               >
                 Create
               </button>
@@ -158,7 +158,7 @@ export const ChecklistsView: React.FC<ChecklistsViewProps> = ({
         </form>
       )}
 
-      {/* Floating Pastel Checklist Cards (matching screenshot 5) */}
+      {/* Floating Pastel Checklist Cards */}
       <div className="space-y-4">
         {checklists.map((cl, idx) => {
           const theme = CHECKLIST_THEMES[idx % CHECKLIST_THEMES.length];
@@ -169,7 +169,7 @@ export const ChecklistsView: React.FC<ChecklistsViewProps> = ({
               key={cl.id}
               className={`relative rounded-3xl p-4.5 shadow-sm border transition-all ${theme.bg} ${theme.border} overflow-hidden`}
             >
-              {/* Cute Floating Category Badge at top right (matching screenshot 5) */}
+              {/* Cute Floating Category Badge at top right */}
               <div className={`absolute top-4 right-4 w-9 h-9 rounded-2xl flex items-center justify-center shadow-xs ${theme.badgeBg}`}>
                 {cl.category === 'Study' ? (
                   <BookOpen className="w-4 h-4" />
@@ -184,10 +184,10 @@ export const ChecklistsView: React.FC<ChecklistsViewProps> = ({
 
               {/* Title Header */}
               <div className="pr-12">
-                <h3 className="text-base font-bold text-slate-800 dark:text-slate-100">
+                <h3 className="text-base font-extrabold text-slate-900 dark:text-white">
                   {cl.title}
                 </h3>
-                <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
                   {completedCount} of {cl.items.length} completed
                 </span>
               </div>
@@ -208,16 +208,16 @@ export const ChecklistsView: React.FC<ChecklistsViewProps> = ({
                         className={`w-4 h-4 rounded-full flex items-center justify-center border transition-all ${
                           item.done
                             ? 'bg-blue-600 border-blue-600 text-white'
-                            : 'border-slate-300 dark:border-slate-600 bg-white/80 dark:bg-slate-900/80'
+                            : 'border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-900'
                         }`}
                       >
                         {item.done && <Check className="w-2.5 h-2.5 stroke-[3]" />}
                       </div>
                       <span
-                        className={`text-xs font-medium ${
+                        className={`text-xs ${
                           item.done
-                            ? 'line-through text-slate-400 dark:text-slate-500'
-                            : 'text-slate-800 dark:text-slate-200'
+                            ? 'line-through text-slate-500 dark:text-slate-400 font-medium'
+                            : 'text-slate-900 dark:text-slate-100 font-bold'
                         }`}
                       >
                         {item.text}
@@ -227,7 +227,7 @@ export const ChecklistsView: React.FC<ChecklistsViewProps> = ({
                     <button
                       type="button"
                       onClick={() => handleDeleteItem(cl.id, item.id)}
-                      className="opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-500 p-1 transition-opacity"
+                      className="text-slate-400 hover:text-red-500 p-1 transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -237,7 +237,7 @@ export const ChecklistsView: React.FC<ChecklistsViewProps> = ({
 
               {/* Add item to list form */}
               {activeAddingId === cl.id ? (
-                <div className="flex items-center gap-2 mt-3 pt-2 border-t border-black/5 dark:border-white/5">
+                <div className="flex items-center gap-2 mt-3 pt-2 border-t border-slate-200 dark:border-slate-700">
                   <input
                     type="text"
                     value={newItemText}
@@ -249,7 +249,7 @@ export const ChecklistsView: React.FC<ChecklistsViewProps> = ({
                       }
                     }}
                     placeholder="Add item..."
-                    className="flex-1 text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-hidden"
+                    className="flex-1 text-xs font-medium text-slate-900 dark:text-white bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1.5 focus:outline-hidden"
                     autoFocus
                   />
                   <button
@@ -262,24 +262,24 @@ export const ChecklistsView: React.FC<ChecklistsViewProps> = ({
                   <button
                     type="button"
                     onClick={() => setActiveAddingId(null)}
-                    className="text-xs text-slate-500 px-1"
+                    className="text-xs font-bold text-slate-600 dark:text-slate-400 px-1"
                   >
                     Done
                   </button>
                 </div>
               ) : (
-                <div className="flex items-center justify-between mt-3 pt-2 border-t border-black/5 dark:border-white/5">
+                <div className="flex items-center justify-between mt-3 pt-2 border-t border-slate-200 dark:border-slate-700">
                   <button
                     type="button"
                     onClick={() => setActiveAddingId(cl.id)}
-                    className="text-xs font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1 hover:underline"
+                    className="text-xs font-bold text-blue-600 dark:text-blue-400 flex items-center gap-1 hover:underline"
                   >
                     <Plus className="w-3.5 h-3.5" /> Add item
                   </button>
                   <button
                     type="button"
                     onClick={() => handleDeleteChecklist(cl.id)}
-                    className="text-xs text-slate-400 hover:text-red-500"
+                    className="text-slate-500 hover:text-red-500 p-1 transition-colors"
                     title="Delete checklist"
                   >
                     <Trash2 className="w-3.5 h-3.5" />

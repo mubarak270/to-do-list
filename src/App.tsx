@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import confetti from 'canvas-confetti';
+import { RotateCcw, Trash2, X } from 'lucide-react';
 import { AppHeader } from './components/AppHeader';
 import { OfflineIndicator } from './components/OfflineIndicator';
 import { PWAInstallModal } from './components/PWAInstallModal';
@@ -240,9 +241,50 @@ export default function App() {
     }
   };
 
+  // Undo state for deleted tasks
+  const [deletedTaskUndo, setDeletedTaskUndo] = useState<{ task: Task; index: number } | null>(null);
+  const undoTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const handleDeleteTask = (taskId: string) => {
+    const taskToDelete = tasks.find((t) => t.id === taskId);
+    if (!taskToDelete) return;
+
+    const taskIndex = tasks.findIndex((t) => t.id === taskId);
     notificationService.cancelTask(taskId);
     setTasks((prev) => prev.filter((t) => t.id !== taskId));
+
+    if (undoTimeoutRef.current) {
+      clearTimeout(undoTimeoutRef.current);
+    }
+
+    setDeletedTaskUndo({ task: taskToDelete, index: taskIndex });
+
+    // Auto-dismiss undo snackbar after 6 seconds
+    undoTimeoutRef.current = setTimeout(() => {
+      setDeletedTaskUndo(null);
+    }, 6000);
+  };
+
+  const handleUndoDelete = () => {
+    if (!deletedTaskUndo) return;
+    const { task, index } = deletedTaskUndo;
+
+    setTasks((prev) => {
+      const copy = [...prev];
+      copy.splice(Math.min(index, copy.length), 0, task);
+      return copy;
+    });
+
+    if (settings.notificationsEnabled && task.reminderEnabled && !task.completed) {
+      notificationService.scheduleTask(task);
+    }
+
+    soundManager.playTone(520, 0.08);
+    setDeletedTaskUndo(null);
+
+    if (undoTimeoutRef.current) {
+      clearTimeout(undoTimeoutRef.current);
+    }
   };
 
   // Helper to add test reminder task directly into task list for testing
@@ -499,6 +541,41 @@ export default function App() {
           />
         )}
       </main>
+
+      {/* Undo Task Deletion Snackbar */}
+      {deletedTaskUndo && (
+        <aside
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-16 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-md animate-in slide-in-from-bottom-3 duration-200"
+        >
+          <div className="bg-slate-900 dark:bg-slate-800 text-white px-4 py-3 rounded-2xl shadow-2xl border border-slate-700 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5 truncate">
+              <Trash2 className="w-4 h-4 text-red-400 shrink-0" />
+              <span className="text-xs font-semibold truncate text-slate-100">
+                Deleted "{deletedTaskUndo.task.title}"
+              </span>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                id="undo-delete-task-btn"
+                onClick={handleUndoDelete}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold shadow-xs active:scale-95 transition-all"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Undo</span>
+              </button>
+              <button
+                onClick={() => setDeletedTaskUndo(null)}
+                className="p-1 text-slate-400 hover:text-white rounded-lg"
+                title="Dismiss"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </aside>
+      )}
 
       {/* Bottom Navigation Bar */}
       <BottomNavBar

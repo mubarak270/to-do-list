@@ -117,10 +117,10 @@ export const TasksMainView: React.FC<TasksMainViewProps> = ({
       <div className="px-5 pt-3 pb-2">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <h1 className="text-xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+            <h1 className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               Organize Your Day
             </h1>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs text-slate-600 dark:text-slate-300 font-medium">
               {tasks.filter(t => !t.completed).length} tasks remaining today
             </p>
           </div>
@@ -129,7 +129,7 @@ export const TasksMainView: React.FC<TasksMainViewProps> = ({
             <button
               id="toggle-search-btn"
               onClick={() => setIsSearchOpen(!isSearchOpen)}
-              className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"
+              className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200"
               title="Search tasks"
             >
               <Search className="w-5 h-5" />
@@ -140,20 +140,20 @@ export const TasksMainView: React.FC<TasksMainViewProps> = ({
         {/* Expandable Search Input */}
         {isSearchOpen && (
           <div className="relative mb-3 animate-in fade-in slide-in-from-top-2 duration-150">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5 pointer-events-none" />
+            <Search className="w-4 h-4 text-slate-500 dark:text-slate-400 absolute left-3 top-2.5 pointer-events-none" />
             <input
               id="tasks-search-input"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search tasks, notes, checklists..."
-              className="w-full text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl pl-9 pr-8 py-2 outline-hidden focus:border-blue-500 shadow-xs"
+              className="w-full text-xs font-medium text-slate-900 dark:text-white bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-2xl pl-9 pr-8 py-2 outline-hidden focus:border-blue-500 shadow-xs placeholder:text-slate-400 dark:placeholder:text-slate-500"
               autoFocus
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600"
+                className="absolute right-2.5 top-2.5 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-100"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -161,7 +161,7 @@ export const TasksMainView: React.FC<TasksMainViewProps> = ({
           </div>
         )}
 
-        {/* Category Filter Pills (matching screenshot 8: All, Work, Personal, Wishlist, Study, + Add) */}
+        {/* Category Filter Pills */}
         <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar select-none">
           {categories.map((cat) => {
             const isSelected = selectedCategoryId === cat.id;
@@ -170,10 +170,10 @@ export const TasksMainView: React.FC<TasksMainViewProps> = ({
                 key={cat.id}
                 id={`cat-pill-${cat.id}`}
                 onClick={() => onSelectCategory(cat.id)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-150 ${
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all duration-150 ${
                   isSelected
                     ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/25'
-                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-200/80 dark:border-slate-700/60'
+                    : 'bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-750 border border-slate-300 dark:border-slate-700'
                 }`}
               >
                 {cat.name}
@@ -184,7 +184,7 @@ export const TasksMainView: React.FC<TasksMainViewProps> = ({
           <button
             id="add-category-pill-btn"
             onClick={() => setIsAddingCategory(true)}
-            className="px-2.5 py-1.5 rounded-full text-xs font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 dark:hover:bg-blue-900/60 flex items-center gap-1 whitespace-nowrap border border-blue-200/50 dark:border-blue-800/50"
+            className="px-2.5 py-1.5 rounded-full text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/70 hover:bg-blue-100 dark:hover:bg-blue-900/60 flex items-center gap-1 whitespace-nowrap border border-blue-200 dark:border-blue-800"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Category</span>
@@ -199,19 +199,19 @@ export const TasksMainView: React.FC<TasksMainViewProps> = ({
               value={newCategoryName}
               onChange={(e) => setNewCategoryName(e.target.value)}
               placeholder="New category name..."
-              className="flex-1 text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 outline-hidden"
+              className="flex-1 text-xs font-medium text-slate-900 dark:text-white bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-1.5 outline-hidden"
               autoFocus
             />
             <button
               type="submit"
-              className="px-3 py-1.5 bg-blue-600 text-white rounded-xl text-xs font-bold"
+              className="px-3 py-1.5 bg-blue-600 text-white rounded-xl text-xs font-bold shadow-xs hover:bg-blue-700"
             >
               Add
             </button>
             <button
               type="button"
               onClick={() => setIsAddingCategory(false)}
-              className="text-xs text-slate-400 px-1"
+              className="text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white px-1"
             >
               Cancel
             </button>
@@ -219,17 +219,17 @@ export const TasksMainView: React.FC<TasksMainViewProps> = ({
         )}
 
         {/* Status Filters Bar (All / Today / Upcoming / Completed / Overdue) */}
-        <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-200/50 dark:border-slate-800 text-xs">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-200 dark:border-slate-800 text-xs">
+          <div className="flex items-center gap-2.5">
             {(['all', 'today', 'upcoming', 'completed', 'overdue'] as TaskFilter[]).map((f) => (
               <button
                 key={f}
                 id={`status-filter-${f}`}
                 onClick={() => setActiveFilter(f)}
-                className={`capitalize text-[11px] font-semibold transition-colors pb-0.5 ${
+                className={`capitalize text-xs font-bold transition-colors pb-0.5 ${
                   activeFilter === f
                     ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
-                    : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-200'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 {f}
@@ -237,7 +237,7 @@ export const TasksMainView: React.FC<TasksMainViewProps> = ({
             ))}
           </div>
 
-          <span className="text-[11px] text-slate-400 font-medium">
+          <span className="text-[11px] text-slate-600 dark:text-slate-400 font-semibold">
             {filteredTasks.length} items
           </span>
         </div>
@@ -298,7 +298,7 @@ export const TasksMainView: React.FC<TasksMainViewProps> = ({
               <div>
                 <button
                   onClick={() => toggleSection('today')}
-                  className="w-full flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2"
+                  className="w-full flex items-center justify-between text-xs font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2.5"
                 >
                   <span className="flex items-center gap-1.5">
                     Today ({todayList.length})
@@ -331,7 +331,7 @@ export const TasksMainView: React.FC<TasksMainViewProps> = ({
               <div>
                 <button
                   onClick={() => toggleSection('upcoming')}
-                  className="w-full flex items-center justify-between text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2"
+                  className="w-full flex items-center justify-between text-xs font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2.5"
                 >
                   <span className="flex items-center gap-1.5">
                     Future / Upcoming ({upcomingList.length})
@@ -364,7 +364,7 @@ export const TasksMainView: React.FC<TasksMainViewProps> = ({
               <div>
                 <button
                   onClick={() => toggleSection('completed')}
-                  className="w-full flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2"
+                  className="w-full flex items-center justify-between text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2.5"
                 >
                   <span className="flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />

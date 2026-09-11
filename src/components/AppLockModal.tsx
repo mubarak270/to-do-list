@@ -68,10 +68,10 @@ export const AppLockModal: React.FC<AppLockModalProps> = ({
           <Lock className="w-8 h-8" />
         </div>
 
-        <h2 className="text-xl font-bold text-white mb-1">
+        <h2 className="text-xl font-extrabold text-white mb-1">
           {isSetupMode ? 'Set 4-Digit App Lock' : 'App Locked'}
         </h2>
-        <p className="text-xs text-slate-400 mb-6">
+        <p className="text-xs text-slate-300 font-medium mb-6">
           {isSetupMode ? 'Enter a 4-digit PIN code' : 'Enter your PIN code to access tasks'}
         </p>
 
@@ -93,7 +93,7 @@ export const AppLockModal: React.FC<AppLockModalProps> = ({
         </div>
 
         {errorMsg && (
-          <p className="text-xs font-semibold text-red-400 mb-4 animate-shake">
+          <p className="text-xs font-bold text-red-400 mb-4 animate-shake">
             {errorMsg}
           </p>
         )}
@@ -106,7 +106,7 @@ export const AppLockModal: React.FC<AppLockModalProps> = ({
               id={`pin-btn-${digit}`}
               type="button"
               onClick={() => handleDigitPress(digit)}
-              className="w-16 h-16 rounded-full bg-slate-800/80 hover:bg-slate-700 text-white text-xl font-bold flex items-center justify-center border border-slate-700/60 active:scale-90 transition-all"
+              className="w-16 h-16 rounded-full bg-slate-800 hover:bg-slate-700 text-white text-2xl font-extrabold flex items-center justify-center border border-slate-700 active:scale-90 transition-all"
             >
               {digit}
             </button>
@@ -117,7 +117,7 @@ export const AppLockModal: React.FC<AppLockModalProps> = ({
             <button
               type="button"
               onClick={handleBiometricAuth}
-              className="w-16 h-16 rounded-full bg-slate-800/80 hover:bg-slate-700 text-blue-400 flex items-center justify-center border border-slate-700/60 active:scale-90 transition-all"
+              className="w-16 h-16 rounded-full bg-slate-800 hover:bg-slate-700 text-blue-400 flex items-center justify-center border border-slate-700 active:scale-90 transition-all"
               title="Unlock with Biometrics"
             >
               <Fingerprint className="w-7 h-7" />
@@ -131,7 +131,7 @@ export const AppLockModal: React.FC<AppLockModalProps> = ({
             id="pin-btn-0"
             type="button"
             onClick={() => handleDigitPress('0')}
-            className="w-16 h-16 rounded-full bg-slate-800/80 hover:bg-slate-700 text-white text-xl font-bold flex items-center justify-center border border-slate-700/60 active:scale-90 transition-all"
+            className="w-16 h-16 rounded-full bg-slate-800 hover:bg-slate-700 text-white text-2xl font-extrabold flex items-center justify-center border border-slate-700 active:scale-90 transition-all"
           >
             0
           </button>
@@ -141,7 +141,7 @@ export const AppLockModal: React.FC<AppLockModalProps> = ({
             id="pin-btn-del"
             type="button"
             onClick={handleDelete}
-            className="w-16 h-16 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center border border-slate-700/60 active:scale-90 transition-all"
+            className="w-16 h-16 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center border border-slate-700 active:scale-90 transition-all"
           >
             <Delete className="w-6 h-6" />
           </button>
@@ -153,7 +153,7 @@ export const AppLockModal: React.FC<AppLockModalProps> = ({
             <button
               type="button"
               onClick={onCloseSetup}
-              className="flex-1 py-2 rounded-xl text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700"
+              className="flex-1 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-200 hover:bg-slate-700"
             >
               Cancel
             </button>
@@ -165,7 +165,7 @@ export const AppLockModal: React.FC<AppLockModalProps> = ({
                   onSaveNewPin(enteredPin, biometricToggled);
                 }
               }}
-              className="flex-1 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-500 disabled:opacity-50"
+              className="flex-1 py-2 rounded-xl text-xs font-extrabold bg-blue-600 text-white hover:bg-blue-500 disabled:opacity-50"
             >
               Save PIN
             </button>

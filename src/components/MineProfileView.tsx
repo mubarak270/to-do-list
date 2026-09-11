@@ -63,7 +63,7 @@ export const MineProfileView: React.FC<MineProfileViewProps> = ({
   return (
     <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4 bg-slate-50/50 dark:bg-slate-900/50 pb-20">
       {/* Profile Header Card */}
-      <div className="bg-white dark:bg-slate-850 rounded-3xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
+      <div className="bg-white dark:bg-slate-850 rounded-3xl p-5 shadow-sm border border-slate-300 dark:border-slate-800 flex items-center justify-between">
         <div className="flex items-center gap-3.5">
           <div className="relative">
             <img
@@ -72,19 +72,19 @@ export const MineProfileView: React.FC<MineProfileViewProps> = ({
               className="w-14 h-14 rounded-full object-cover border-2 border-blue-500 shadow-xs"
               referrerPolicy="no-referrer"
             />
-            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[10px] font-bold border-2 border-white dark:border-slate-850">
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] font-bold border-2 border-white dark:border-slate-850">
               ✓
             </div>
           </div>
           <div>
-            <h2 className="text-base font-bold text-slate-800 dark:text-slate-100">
+            <h2 className="text-base font-extrabold text-slate-900 dark:text-white">
               {settings.googleDrive.name || 'Android User'}
             </h2>
-            <p className="text-xs text-slate-500 dark:text-slate-400">
+            <p className="text-xs font-semibold text-slate-600 dark:text-slate-300">
               {settings.googleDrive.email || 'mhshow79@gmail.com'}
             </p>
             <div className="flex items-center gap-1.5 mt-1">
-              <span className="text-[10px] font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded-full">
+              <span className="text-[10px] font-bold text-blue-700 dark:text-blue-300 bg-blue-100 dark:bg-blue-950/60 px-2.5 py-0.5 rounded-full border border-blue-300 dark:border-blue-800">
                 Google Account Active
               </span>
             </div>
@@ -93,7 +93,7 @@ export const MineProfileView: React.FC<MineProfileViewProps> = ({
 
         <button
           onClick={onNavigateToSettings}
-          className="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800"
+          className="p-2 rounded-xl text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
           title="Open Settings"
         >
           <Settings className="w-5 h-5" />
@@ -111,8 +111,8 @@ export const MineProfileView: React.FC<MineProfileViewProps> = ({
               <Cloud className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-sm font-bold">Google Drive Cloud Sync</h3>
-              <p className="text-xs text-blue-100">
+              <h3 className="text-sm font-extrabold">Google Drive Cloud Sync</h3>
+              <p className="text-xs font-medium text-blue-100">
                 {settings.googleDrive.lastSyncTime
                   ? `Last synced: ${settings.googleDrive.lastSyncTime}`
                   : 'Automatic backup active'}
@@ -122,7 +122,7 @@ export const MineProfileView: React.FC<MineProfileViewProps> = ({
 
           <button
             onClick={onOpenSyncModal}
-            className="px-3 py-1.5 rounded-xl bg-white text-blue-600 hover:bg-blue-50 text-xs font-bold shadow-xs active:scale-95 transition-all"
+            className="px-3.5 py-1.5 rounded-xl bg-white text-blue-700 hover:bg-blue-50 text-xs font-extrabold shadow-xs active:scale-95 transition-all"
           >
             Sync Now
           </button>
@@ -131,7 +131,7 @@ export const MineProfileView: React.FC<MineProfileViewProps> = ({
         <div className="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-white/20">
           <button
             onClick={handleExportBackup}
-            className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold backdrop-blur-xs"
+            className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold backdrop-blur-xs"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export Backup</span>
@@ -139,7 +139,7 @@ export const MineProfileView: React.FC<MineProfileViewProps> = ({
 
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold backdrop-blur-xs"
+            className="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold backdrop-blur-xs"
           >
             <Upload className="w-3.5 h-3.5" />
             <span>Restore Backup</span>
@@ -156,23 +156,23 @@ export const MineProfileView: React.FC<MineProfileViewProps> = ({
 
       {/* Install App / APK Card */}
       {onOpenInstallModal && (
-        <div className="bg-white dark:bg-slate-850 rounded-3xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
+        <div className="bg-white dark:bg-slate-850 rounded-3xl p-4 shadow-sm border border-slate-300 dark:border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-2xl bg-blue-100 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 flex items-center justify-center">
               <Smartphone className="w-5 h-5" />
             </div>
             <div>
-              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-100">
+              <h4 className="text-xs font-extrabold text-slate-900 dark:text-white">
                 Install Mobile App (APK)
               </h4>
-              <p className="text-[11px] text-slate-400">
-                ফোনে সরাসরি ইনস্টল বা হোমস্ক্রিনে যুক্ত করুন
+              <p className="text-[11px] font-medium text-slate-600 dark:text-slate-300">
+                Install directly on your phone as a standalone app
               </p>
             </div>
           </div>
           <button
             onClick={onOpenInstallModal}
-            className="px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-xs active:scale-95 transition-all flex items-center gap-1.5"
+            className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-xs active:scale-95 transition-all flex items-center gap-1.5"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Install</span>
@@ -180,16 +180,16 @@ export const MineProfileView: React.FC<MineProfileViewProps> = ({
         </div>
       )}
 
-      {/* Birthday & Important Date Countdowns (matching screenshot 6) */}
-      <div className="bg-white dark:bg-slate-850 rounded-3xl p-4 shadow-sm border border-slate-200/80 dark:border-slate-800">
+      {/* Birthday & Important Date Countdowns */}
+      <div className="bg-white dark:bg-slate-850 rounded-3xl p-4 shadow-sm border border-slate-300 dark:border-slate-800">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+          <h3 className="text-xs font-extrabold text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-1.5">
             <Cake className="w-4 h-4 text-rose-500" />
             Important Date Countdowns
           </h3>
           <button
             onClick={onOpenAddCountdown}
-            className="text-xs font-semibold text-blue-600 dark:text-blue-400 flex items-center gap-1 hover:underline"
+            className="text-xs font-bold text-blue-700 dark:text-blue-400 flex items-center gap-1 hover:underline"
           >
             <Plus className="w-3.5 h-3.5" /> Add
           </button>
@@ -201,23 +201,23 @@ export const MineProfileView: React.FC<MineProfileViewProps> = ({
             return (
               <div
                 key={cd.id}
-                className="flex items-center justify-between p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60"
+                className="flex items-center justify-between p-2.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/60"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-2xl">🎂</span>
                   <div>
-                    <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    <h4 className="text-xs font-extrabold text-slate-900 dark:text-white">
                       {cd.title}
                     </h4>
-                    <p className="text-[10px] text-slate-400">{cd.date}</p>
+                    <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-300">{cd.date}</p>
                   </div>
                 </div>
 
                 <div className="text-right">
-                  <span className="text-base font-black text-rose-500">
+                  <span className="text-base font-black text-rose-600 dark:text-rose-400">
                     {daysLeft >= 0 ? `${daysLeft} D` : `${Math.abs(daysLeft)} D ago`}
                   </span>
-                  <p className="text-[9px] text-slate-400 font-semibold uppercase">
+                  <p className="text-[10px] text-slate-600 dark:text-slate-300 font-bold uppercase">
                     {daysLeft === 0 ? 'Today!' : daysLeft > 0 ? 'Remaining' : 'Passed'}
                   </p>
                 </div>
@@ -229,27 +229,27 @@ export const MineProfileView: React.FC<MineProfileViewProps> = ({
 
       {/* Productivity Stats Grid */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="bg-white dark:bg-slate-850 rounded-2xl p-3.5 shadow-xs border border-slate-200/80 dark:border-slate-800 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 font-bold">
+        <div className="bg-white dark:bg-slate-850 rounded-2xl p-3.5 shadow-xs border border-slate-300 dark:border-slate-800 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-emerald-700 dark:text-emerald-400 font-bold">
             ✓
           </div>
           <div>
-            <span className="text-lg font-extrabold text-slate-800 dark:text-slate-100">
+            <span className="text-lg font-black text-slate-900 dark:text-white">
               {completedCount}
             </span>
-            <p className="text-[10px] text-slate-400">Total Completed</p>
+            <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-300">Total Completed</p>
           </div>
         </div>
 
-        <div className="bg-white dark:bg-slate-850 rounded-2xl p-3.5 shadow-xs border border-slate-200/80 dark:border-slate-800 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950 flex items-center justify-center text-amber-600">
+        <div className="bg-white dark:bg-slate-850 rounded-2xl p-3.5 shadow-xs border border-slate-300 dark:border-slate-800 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-amber-700 dark:text-amber-400">
             <Award className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-lg font-extrabold text-slate-800 dark:text-slate-100">
+            <span className="text-lg font-black text-slate-900 dark:text-white">
               7 Days
             </span>
-            <p className="text-[10px] text-slate-400">Productivity Streak</p>
+            <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-300">Productivity Streak</p>
           </div>
         </div>
       </div>

@@ -23,20 +23,20 @@ export const WidgetsView: React.FC<WidgetsViewProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+          <h2 className="text-xl font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
             Home-Screen Widgets
             <span className="bg-blue-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full">
               40+
             </span>
           </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs font-semibold text-slate-600 dark:text-slate-300">
             Interactive Android widgets for quick home screen access
           </p>
         </div>
 
         <button
           onClick={() => setActiveWidgetTab(activeWidgetTab === 'gallery' ? 'preview' : 'gallery')}
-          className="text-xs font-semibold px-2.5 py-1 rounded-xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center gap-1 border border-blue-200 dark:border-blue-800"
+          className="text-xs font-bold px-3 py-1.5 rounded-xl bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 flex items-center gap-1.5 border border-blue-300 dark:border-blue-800"
         >
           <Smartphone className="w-3.5 h-3.5" />
           <span>{activeWidgetTab === 'gallery' ? 'Home Preview' : 'Widget Styles'}</span>
@@ -109,12 +109,12 @@ export const WidgetsView: React.FC<WidgetsViewProps> = ({
         /* Widget Gallery matching screenshot 6 */
         <div className="space-y-4">
           {/* Widget 1: Grid Paper Style (matching screenshot 6 top left) */}
-          <div className="bg-white dark:bg-slate-850 rounded-3xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:12px_12px] dark:bg-[radial-gradient(#334155_1px,transparent_1px)]">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-700 mb-2">
-              <h3 className="text-xs font-bold tracking-wide text-slate-800 dark:text-slate-100 uppercase">
+          <div className="bg-white dark:bg-slate-850 rounded-3xl p-4 shadow-sm border border-slate-300 dark:border-slate-800 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:12px_12px] dark:bg-[radial-gradient(#334155_1px,transparent_1px)]">
+            <div className="flex items-center justify-between pb-2 border-b border-slate-300 dark:border-slate-700 mb-2">
+              <h3 className="text-xs font-extrabold tracking-wide text-slate-900 dark:text-white uppercase">
                 Today (Grid Paper Widget)
               </h3>
-              <span className="text-[10px] font-semibold text-slate-400">4x2 Medium</span>
+              <span className="text-[11px] font-bold text-slate-600 dark:text-slate-300">4x2 Medium</span>
             </div>
 
             <div className="space-y-2">
@@ -126,15 +126,15 @@ export const WidgetsView: React.FC<WidgetsViewProps> = ({
                 >
                   <div className="flex items-center gap-2 truncate">
                     <span className={`w-4 h-4 rounded-sm flex items-center justify-center border transition-all ${
-                      t.completed ? 'bg-blue-600 border-blue-600 text-white' : 'border-slate-400 bg-white dark:bg-slate-900'
+                      t.completed ? 'bg-blue-600 border-blue-600 text-white' : 'border-slate-500 bg-white dark:bg-slate-900'
                     }`}>
                       {t.completed && <Check className="w-2.5 h-2.5 stroke-[3]" />}
                     </span>
-                    <span className={`truncate font-medium ${t.completed ? 'line-through text-slate-400' : 'text-slate-800 dark:text-slate-200'}`}>
+                    <span className={`truncate font-bold ${t.completed ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white'}`}>
                       {idx + 1}. {t.title}
                     </span>
                   </div>
-                  <span className="text-[10px] text-slate-400 shrink-0 ml-2">
+                  <span className="text-[11px] font-semibold text-slate-600 dark:text-slate-300 shrink-0 ml-2">
                     {t.dueTime || 'All Day'}
                   </span>
                 </div>
@@ -143,27 +143,27 @@ export const WidgetsView: React.FC<WidgetsViewProps> = ({
           </div>
 
           {/* Widget 2: Yellow Sticky Note with Paperclip (matching screenshot 6 top right) */}
-          <div className="relative bg-[#FEF08A] text-slate-900 rounded-3xl p-4 shadow-sm border border-yellow-300">
+          <div className="relative bg-[#FEF08A] text-slate-900 rounded-3xl p-4 shadow-sm border border-yellow-400">
             {/* Paperclip top decoration */}
-            <div className="absolute top-2 right-6 text-rose-500">
+            <div className="absolute top-2 right-6 text-rose-600">
               <Paperclip className="w-5 h-5 -rotate-45" />
             </div>
 
-            <h3 className="text-xs font-bold text-slate-800 tracking-wide uppercase mb-2">
+            <h3 className="text-xs font-black text-slate-950 tracking-wide uppercase mb-2">
               Sticky Note Widget
             </h3>
 
-            <div className="space-y-1.5 text-xs font-medium">
+            <div className="space-y-1.5 text-xs font-bold">
               {todayTasks.slice(0, 4).map((t) => (
                 <div
                   key={t.id}
                   onClick={() => onToggleTask(t.id)}
                   className="flex items-center justify-between cursor-pointer py-0.5"
                 >
-                  <span className={`truncate ${t.completed ? 'line-through text-slate-500' : 'text-slate-900'}`}>
+                  <span className={`truncate ${t.completed ? 'line-through text-slate-500' : 'text-slate-950 font-bold'}`}>
                     • {t.title}
                   </span>
-                  <span className="text-[10px] text-yellow-800 shrink-0 ml-1">
+                  <span className="text-[11px] text-yellow-900 font-bold shrink-0 ml-1">
                     {t.dueTime}
                   </span>
                 </div>
@@ -172,24 +172,24 @@ export const WidgetsView: React.FC<WidgetsViewProps> = ({
           </div>
 
           {/* Widget 3: Birthday Countdown Widget (matching screenshot 6 middle) */}
-          <div className="bg-white dark:bg-slate-850 rounded-3xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+          <div className="bg-white dark:bg-slate-850 rounded-3xl p-4 shadow-sm border border-slate-300 dark:border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/50 flex items-center justify-center text-2xl border border-rose-200 dark:border-rose-900">
+              <div className="w-12 h-12 rounded-2xl bg-rose-100 dark:bg-rose-950/50 flex items-center justify-center text-2xl border border-rose-300 dark:border-rose-900">
                 🎂
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-800 dark:text-slate-100">
+                <h3 className="text-sm font-extrabold text-slate-900 dark:text-white">
                   My birthday
                 </h3>
-                <p className="text-xs text-slate-400">2026/09/21</p>
+                <p className="text-xs font-semibold text-slate-600 dark:text-slate-300">2026/09/21</p>
               </div>
             </div>
 
             <div className="text-right">
-              <span className="text-2xl font-black text-slate-800 dark:text-slate-100 tracking-tight">
+              <span className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
                 -12 D
               </span>
-              <p className="text-[10px] text-rose-500 font-bold uppercase">Countdown</p>
+              <p className="text-[10px] text-rose-600 dark:text-rose-400 font-bold uppercase">Countdown</p>
             </div>
           </div>
 
