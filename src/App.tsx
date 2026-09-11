@@ -19,6 +19,7 @@ import { AddCountdownModal } from './components/AddCountdownModal';
 import { Task, Category, Checklist, BirthdayCountdown, UserSettings, TabType } from './types';
 import { storage } from './utils/storage';
 import { soundManager } from './utils/audio';
+import { notificationService } from './utils/notificationService';
 
 export default function App() {
   // State from storage
@@ -80,19 +81,40 @@ export default function App() {
     }
   }, [settings.theme]);
 
-  // Simulate reminder notification after a few seconds on first launch
+  // Initialize Capacitor Local Notifications, channel, tap listener, and foreground listener
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (settings.notificationsEnabled) {
-        const reminderTask = tasks.find((t) => t.reminderEnabled && !t.completed) || tasks[1];
-        if (reminderTask) {
-          setActiveReminder(reminderTask);
-          soundManager.playReminderSound();
-        }
+    notificationService.init();
+
+    // 1. Notification Tap handler (when user clicks notification in Android notification shade)
+    const unsubscribeTap = notificationService.onNotificationTap((taskId) => {
+      console.log('Notification tapped for taskId:', taskId);
+      const target = tasks.find((t) => t.id === taskId);
+      if (target) {
+        setActiveReminder(target);
+        setActiveTab('tasks');
       }
-    }, 4500);
-    return () => clearTimeout(timer);
-  }, []);
+    });
+
+    // 2. Foreground notification handler (when notification arrives while app is open)
+    const unsubscribeReceived = notificationService.onNotificationReceived((notif) => {
+      const taskId = notif.extra?.taskId as string;
+      const target = tasks.find((t) => t.id === taskId);
+      if (target) {
+        setActiveReminder(target);
+        soundManager.playReminderSound();
+      }
+    });
+
+    return () => {
+      unsubscribeTap();
+      unsubscribeReceived();
+    };
+  }, [tasks]);
+
+  // Reschedule all active task reminders after app restart / when tasks or notification settings change
+  useEffect(() => {
+    notificationService.rescheduleAll(tasks, settings.notificationsEnabled);
+  }, [tasks, settings.notificationsEnabled]);
 
   // Handle Tab changes with history
   const handleTabChange = (tab: TabType) => {
@@ -151,6 +173,7 @@ export default function App() {
         const willComplete = !t.completed;
         if (willComplete) {
           soundManager.playCompleteSound();
+          notificationService.cancelTask(taskId);
           try {
             confetti({
               particleCount: 35,
@@ -160,6 +183,12 @@ export default function App() {
             });
           } catch {
             // Safe fallback
+          }
+        } else {
+          // Re-schedule reminder if enabled
+          const reopenedTask = { ...t, completed: false };
+          if (settings.notificationsEnabled && reopenedTask.reminderEnabled) {
+            notificationService.scheduleTask(reopenedTask);
           }
         }
         return {
@@ -175,9 +204,14 @@ export default function App() {
   const handleSaveTask = (taskData: Partial<Task>) => {
     if (taskData.id) {
       // Update existing
-      setTasks((prev) =>
-        prev.map((t) => (t.id === taskData.id ? ({ ...t, ...taskData } as Task) : t))
-      );
+      setTasks((prev) => {
+        const updated = prev.map((t) => (t.id === taskData.id ? ({ ...t, ...taskData } as Task) : t));
+        const updatedTask = updated.find((t) => t.id === taskData.id);
+        if (updatedTask && settings.notificationsEnabled) {
+          notificationService.scheduleTask(updatedTask);
+        }
+        return updated;
+      });
     } else {
       // Create new
       const newTask: Task = {
@@ -200,11 +234,41 @@ export default function App() {
         voiceNotes: taskData.voiceNotes || []
       };
       setTasks((prev) => [newTask, ...prev]);
+      if (settings.notificationsEnabled && newTask.reminderEnabled) {
+        notificationService.scheduleTask(newTask);
+      }
     }
   };
 
   const handleDeleteTask = (taskId: string) => {
+    notificationService.cancelTask(taskId);
     setTasks((prev) => prev.filter((t) => t.id !== taskId));
+  };
+
+  // Helper to add test reminder task directly into task list for testing
+  const handleAddTestReminderTask = (title: string, minutesFromNow: number) => {
+    const fireTimeDate = new Date(Date.now() + minutesFromNow * 60 * 1000);
+    const ymd = fireTimeDate.toISOString().split('T')[0];
+    const timeStr = `${String(fireTimeDate.getHours()).padStart(2, '0')}:${String(fireTimeDate.getMinutes()).padStart(2, '0')}`;
+    const testTask: Task = {
+      id: `task-test-${Date.now()}`,
+      title,
+      description: 'Scheduled test reminder for Android notification engine',
+      categoryId: 'personal',
+      priority: 'high',
+      dueDate: ymd,
+      dueTime: timeStr,
+      reminderEnabled: true,
+      reminderTime: timeStr,
+      repeat: 'none',
+      completed: false,
+      createdAt: new Date().toISOString(),
+      subtasks: [],
+      attachments: [],
+      voiceNotes: []
+    };
+    setTasks((prev) => [testTask, ...prev]);
+    notificationService.scheduleTask(testTask);
   };
 
   const handleEditTask = (task: Task) => {
@@ -431,6 +495,7 @@ export default function App() {
             onOpenSyncModal={() => setIsDriveSyncModalOpen(true)}
             onOpenAppLockSetup={() => setIsAppLockSetupOpen(true)}
             onOpenInstallModal={() => setIsPWAInstallOpen(true)}
+            onAddTestTask={handleAddTestReminderTask}
           />
         )}
       </main>

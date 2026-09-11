@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import {
   Bell, Palette, Calendar, Lock, MessageSquare, Shield,
   AlertCircle, RefreshCw, CheckCircle2, ChevronRight,
-  ExternalLink, Moon, Sun, Smartphone, Check, Cloud, Download
+  ExternalLink, Moon, Sun, Smartphone, Check, Cloud, Download,
+  BellRing, Timer, Sparkles
 } from 'lucide-react';
 import { UserSettings } from '../types';
+import { notificationService } from '../utils/notificationService';
+import { soundManager } from '../utils/audio';
 
 interface SettingsViewProps {
   settings: UserSettings;
@@ -12,6 +15,7 @@ interface SettingsViewProps {
   onOpenSyncModal: () => void;
   onOpenAppLockSetup: () => void;
   onOpenInstallModal?: () => void;
+  onAddTestTask?: (title: string, minutesFromNow: number) => void;
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
@@ -19,11 +23,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   onUpdateSettings,
   onOpenSyncModal,
   onOpenAppLockSetup,
-  onOpenInstallModal
+  onOpenInstallModal,
+  onAddTestTask
 }) => {
   const [activeModal, setActiveModal] = useState<'privacy' | 'disclaimer' | 'feedback' | null>(null);
   const [feedbackText, setFeedbackText] = useState('');
   const [feedbackSent, setFeedbackSent] = useState(false);
+  const [notificationStatusMsg, setNotificationStatusMsg] = useState<string | null>(null);
+  const [isTestingNotif, setIsTestingNotif] = useState(false);
 
   const handleThemeChange = (theme: 'light' | 'dark' | 'system') => {
     onUpdateSettings({ ...settings, theme });
@@ -33,11 +40,57 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
     onUpdateSettings({ ...settings, firstDayOfWeek });
   };
 
-  const handleNotificationToggle = () => {
+  const handleNotificationToggle = async () => {
+    const nextVal = !settings.notificationsEnabled;
+    if (nextVal) {
+      const granted = await notificationService.requestPermission();
+      if (!granted) {
+        setNotificationStatusMsg('⚠️ Permission denied. Please enable notifications in device settings.');
+      } else {
+        setNotificationStatusMsg('✅ Notifications & Android channel enabled.');
+        setTimeout(() => setNotificationStatusMsg(null), 3500);
+      }
+    } else {
+      setNotificationStatusMsg('Notifications disabled');
+      setTimeout(() => setNotificationStatusMsg(null), 2000);
+    }
     onUpdateSettings({
       ...settings,
-      notificationsEnabled: !settings.notificationsEnabled
+      notificationsEnabled: nextVal
     });
+  };
+
+  const handleTestNotification = async () => {
+    setIsTestingNotif(true);
+    setNotificationStatusMsg('Triggering test notification (fires in 3s)...');
+    soundManager.playReminderSound();
+    const success = await notificationService.sendTestNotification();
+    if (success) {
+      setNotificationStatusMsg('🔔 Test notification sent! Check your notification tray.');
+    } else {
+      setNotificationStatusMsg('⚠️ Failed to send. Please check notification permission.');
+    }
+    setTimeout(() => {
+      setIsTestingNotif(false);
+      setTimeout(() => setNotificationStatusMsg(null), 4000);
+    }, 1500);
+  };
+
+  const handleOneMinuteTestReminder = async () => {
+    setIsTestingNotif(true);
+    const result = await notificationService.scheduleOneMinuteTest();
+    if (result.success) {
+      setNotificationStatusMsg(`⏰ 1-Minute Test Reminder scheduled for ${result.fireTime}! You can background or lock your phone now.`);
+      if (onAddTestTask) {
+        onAddTestTask('⏰ 1-Minute Test Reminder', 1);
+      }
+    } else {
+      setNotificationStatusMsg('⚠️ Could not schedule 1-minute test reminder.');
+    }
+    setTimeout(() => {
+      setIsTestingNotif(false);
+      setTimeout(() => setNotificationStatusMsg(null), 5000);
+    }, 1500);
   };
 
   const handleFeedbackSubmit = (e: React.FormEvent) => {
@@ -99,33 +152,79 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
         <div className="bg-white dark:bg-slate-850 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-800 divide-y divide-slate-100 dark:divide-slate-800">
           {/* Notification & Reminder */}
-          <div className="p-3.5 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center text-blue-600">
-                <Bell className="w-4 h-4" />
+          <div>
+            <div className="p-3.5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-950 flex items-center justify-center text-blue-600">
+                  <Bell className="w-4 h-4" />
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                    Notification & Reminder
+                  </span>
+                  <p className="text-[10px] text-slate-400">
+                    Daily reminders, chime sound & ringtone
+                  </p>
+                </div>
               </div>
-              <div>
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
-                  Notification & Reminder
-                </span>
-                <p className="text-[10px] text-slate-400">
-                  Daily reminders, chime sound & ringtone
-                </p>
+              <button
+                id="toggle-notifications-btn"
+                onClick={handleNotificationToggle}
+                className={`w-11 h-6 rounded-full transition-colors relative p-0.5 ${
+                  settings.notificationsEnabled ? 'bg-blue-600' : 'bg-slate-300 dark:bg-slate-700'
+                }`}
+              >
+                <span
+                  className={`block w-5 h-5 rounded-full bg-white transition-transform ${
+                    settings.notificationsEnabled ? 'translate-x-5' : 'translate-x-0'
+                  }`}
+                />
+              </button>
+            </div>
+
+            {/* Notification Testing & Android Channel Sub-Panel */}
+            <div className="px-3.5 pb-3.5 pt-0">
+              <div className="bg-slate-50 dark:bg-slate-900/70 rounded-xl p-2.5 border border-slate-200/70 dark:border-slate-800 space-y-2">
+                <div className="flex items-center justify-between text-[11px]">
+                  <span className="font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Android Notification Engine
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 font-bold text-[10px]">
+                    Channel Active
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap gap-2 pt-0.5">
+                  <button
+                    id="test-notification-btn"
+                    type="button"
+                    onClick={handleTestNotification}
+                    disabled={isTestingNotif}
+                    className="flex-1 min-w-[130px] flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-[11px] font-semibold transition-all shadow-xs disabled:opacity-50"
+                  >
+                    <BellRing className="w-3.5 h-3.5" />
+                    <span>Test Notification</span>
+                  </button>
+
+                  <button
+                    id="test-1min-reminder-btn"
+                    type="button"
+                    onClick={handleOneMinuteTestReminder}
+                    disabled={isTestingNotif}
+                    className="flex-1 min-w-[140px] flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 active:scale-95 text-white text-[11px] font-semibold transition-all shadow-xs disabled:opacity-50"
+                  >
+                    <Timer className="w-3.5 h-3.5" />
+                    <span>1-Min Test Reminder</span>
+                  </button>
+                </div>
+
+                {notificationStatusMsg && (
+                  <p className="text-[10px] font-medium text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800 p-1.5 rounded-md border border-slate-200 dark:border-slate-700 animate-in fade-in">
+                    {notificationStatusMsg}
+                  </p>
+                )}
               </div>
             </div>
-            <button
-              id="toggle-notifications-btn"
-              onClick={handleNotificationToggle}
-              className={`w-11 h-6 rounded-full transition-colors relative p-0.5 ${
-                settings.notificationsEnabled ? 'bg-blue-600' : 'bg-slate-300 dark:bg-slate-700'
-              }`}
-            >
-              <span
-                className={`block w-5 h-5 rounded-full bg-white transition-transform ${
-                  settings.notificationsEnabled ? 'translate-x-5' : 'translate-x-0'
-                }`}
-              />
-            </button>
           </div>
 
           {/* Theme */}
