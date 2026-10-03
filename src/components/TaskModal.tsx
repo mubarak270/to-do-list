@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import {
   X, Calendar, Clock, Bell, Repeat, FileText, Paperclip, Mic,
   Plus, Check, Trash2, Play, Pause, Image as ImageIcon,
-  Tag, Flag, Sparkles, AlertCircle
+  Tag, Flag, Sparkles, AlertCircle, ChevronDown
 } from 'lucide-react';
 import { Task, Category, Priority, RepeatOption, Subtask, Attachment, VoiceNote } from '../types';
 import { soundManager } from '../utils/audio';
@@ -44,6 +44,9 @@ export const TaskModal: React.FC<TaskModalProps> = ({
   const [repeat, setRepeat] = useState<RepeatOption>(initialTask?.repeat || 'none');
   const [notes, setNotes] = useState(initialTask?.notes || '');
   const [colorLabel, setColorLabel] = useState(initialTask?.colorLabel || '#4A80F0');
+
+  // 'More options' expander — keeps the New Task form simple by default
+  const [showMore, setShowMore] = useState(false);
 
   // Subtasks
   const [subtasks, setSubtasks] = useState<Subtask[]>(initialTask?.subtasks || []);
@@ -156,6 +159,11 @@ export const TaskModal: React.FC<TaskModalProps> = ({
       attachments,
       voiceNotes
     });
+    handleClose();
+  };
+
+  const handleClose = () => {
+    setShowMore(false);
     onClose();
   };
 
@@ -175,7 +183,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({
           </div>
           <button
             id="close-task-modal-btn"
-            onClick={onClose}
+            onClick={handleClose}
             className="p-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300"
           >
             <X className="w-5 h-5" />
@@ -206,6 +214,68 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             />
           </div>
 
+          {/* Date, Time & Reminder Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {/* Due Date */}
+            <div className="bg-slate-50 dark:bg-slate-800/80 rounded-xl p-2.5 border border-slate-300 dark:border-slate-700">
+              <label htmlFor="task-due-date-picker" className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5 mb-1">
+                <Calendar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> Due Date
+              </label>
+              <input
+                id="task-due-date-picker"
+                type="date"
+                value={dueDate}
+                onChange={(e) => setDueDate(e.target.value)}
+                className="w-full bg-transparent text-xs font-bold text-slate-900 dark:text-white outline-hidden"
+              />
+            </div>
+
+            {/* Time & Reminder */}
+            <div className="bg-slate-50 dark:bg-slate-800/80 rounded-xl p-2.5 border border-slate-300 dark:border-slate-700">
+              <div className="flex items-center justify-between mb-1">
+                <label htmlFor="task-due-time-picker" className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                  <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> Time & Reminder
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setReminderEnabled(!reminderEnabled)}
+                  className={`text-[10px] font-extrabold px-2 py-0.5 rounded-md ${
+                    reminderEnabled ? 'bg-blue-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  {reminderEnabled ? 'ON' : 'OFF'}
+                </button>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  id="task-due-time-picker"
+                  type="time"
+                  value={dueTime}
+                  onChange={(e) => setDueTime(e.target.value)}
+                  className="bg-transparent text-xs font-bold text-slate-900 dark:text-white outline-hidden"
+                />
+                {reminderEnabled && (
+                  <span className="text-[11px] text-blue-600 dark:text-blue-400 font-bold">
+                    (Remind: {reminderTime || 'at time'})
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* More options expander — extra fields hidden by default for a simple form */}
+          <div>
+            <button
+              id="toggle-more-options-btn"
+              type="button"
+              onClick={() => setShowMore(!showMore)}
+              className="w-full flex items-center justify-center gap-1.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-300 dark:border-slate-700 text-xs font-extrabold text-blue-600 dark:text-blue-400"
+            >
+              আরও
+              <ChevronDown className={`w-4 h-4 transition-transform ${showMore ? 'rotate-180' : ''}`} />
+            </button>
+            {showMore && (
+              <div className="space-y-4 mt-3">
           {/* Quick Category & Priority Selector */}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
             <span className="text-xs text-slate-700 dark:text-slate-300 font-bold shrink-0 flex items-center gap-1">
@@ -326,55 +396,6 @@ export const TaskModal: React.FC<TaskModalProps> = ({
                 </button>
               </div>
             )}
-          </div>
-
-          {/* Date, Time & Reminder Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {/* Due Date */}
-            <div className="bg-slate-50 dark:bg-slate-800/80 rounded-xl p-2.5 border border-slate-300 dark:border-slate-700">
-              <label htmlFor="task-due-date-picker" className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5 mb-1">
-                <Calendar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> Due Date
-              </label>
-              <input
-                id="task-due-date-picker"
-                type="date"
-                value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
-                className="w-full bg-transparent text-xs font-bold text-slate-900 dark:text-white outline-hidden"
-              />
-            </div>
-
-            {/* Time & Reminder */}
-            <div className="bg-slate-50 dark:bg-slate-800/80 rounded-xl p-2.5 border border-slate-300 dark:border-slate-700">
-              <div className="flex items-center justify-between mb-1">
-                <label htmlFor="task-due-time-picker" className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" /> Time & Reminder
-                </label>
-                <button
-                  type="button"
-                  onClick={() => setReminderEnabled(!reminderEnabled)}
-                  className={`text-[10px] font-extrabold px-2 py-0.5 rounded-md ${
-                    reminderEnabled ? 'bg-blue-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
-                  }`}
-                >
-                  {reminderEnabled ? 'ON' : 'OFF'}
-                </button>
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  id="task-due-time-picker"
-                  type="time"
-                  value={dueTime}
-                  onChange={(e) => setDueTime(e.target.value)}
-                  className="bg-transparent text-xs font-bold text-slate-900 dark:text-white outline-hidden"
-                />
-                {reminderEnabled && (
-                  <span className="text-[11px] text-blue-600 dark:text-blue-400 font-bold">
-                    (Remind: {reminderTime || 'at time'})
-                  </span>
-                )}
-              </div>
-            </div>
           </div>
 
           {/* Repeat Task Row */}
@@ -561,12 +582,16 @@ export const TaskModal: React.FC<TaskModalProps> = ({
             </div>
           </div>
 
+              </div>
+            )}
+          </div>
+
           {/* Modal Footer Buttons */}
           <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-2 sticky bottom-0 bg-white dark:bg-slate-900 pb-1">
             <button
               id="cancel-task-btn"
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               className="px-4 py-2 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
             >
               Cancel
